@@ -5,15 +5,33 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    /* ✅ مسیرها */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "noImplicitAny": false,
-    "noUnusedParameters": false,
+
+    /* ✅ برای سازگاری با ESM */
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+
+    /* ✅ سخت‌گیری / شُل‌گیری */
+    "strict": true,
     "skipLibCheck": true,
     "allowJs": true,
+
+    /* اختیاری برای راحتی */
+    "noUnusedParameters": false,
     "noUnusedLocals": false,
-    "strictNullChecks": false
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+
+    /* ✅ فقط چک کن، خروجی نده */
+    "noEmit": true
   }
 }
