@@ -1,0 +1,58 @@
+import { openai } from "../../src/lib/openai";
+import { StrategySchema } from "../../src/lib/schemas";
+import { extractJson } from "../_json";
+import { getPromptPack } from "../../src/lib/configStore";
+
+function json(data: any, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
+export default async function handler(req: Request) {
+  const input = await req.json().catch(() => ({} as any));
+
+  if (!process.env.OPENAI_API_KEY) {
+    return json({
+      goal: input.goal ?? "sales",
+      pillars: ["education_safety", "treatment_selection", "results_maintenance"],
+      funnel: { awareness: 0.4, consideration: 0.35, action: 0.25 },
+      mix_weekly: { reels: 3, stories: 3, posts: 1 },
+      tone: input.tone ?? "خودمونی-حرفه‌ای",
+      guardrails: [
+        "no-false-claims",
+        "consent_for_before_after",
+        "soft_cta",
+        "local_medical_ad_rules",
+      ],
+    });
+  }
+
+  try {
+    const pack = await getPromptPack();
+    const system = [pack.globals.system, ...(pack.globals.guardrails || []).map((g) => "- " + g)].join("\n");
+    const user =
+      "ورودی کاربر:\n" +
+      JSON.stringify(input) +
+      "\nفقط JSON با کلیدهای: goal, pillars[], funnel{awareness,consideration,action}, mix_weekly{reels,stories,posts}, tone, guardrails[]";
+
+    const resp = await (openai as any).responses.create({
+      model: "gpt-4.1-mini",
+      input: [
+        { role: "system", content: system },
+        { role: "user", content: user },
+      ],
+    });
+
+    const outText =
+      (resp as any).output_text ?? (resp as any)?.output?.[0]?.content?.[0]?.text ?? "";
+    const data = extractJson(outText);
+    const parsed = StrategySchema.safeParse(data);
+    if (!parsed.success)
+      return json({ error: "Schema mismatch", issues: parsed.error.issues, raw: data }, 422);
+    return json(parsed.data);
+  } catch (e: any) {
+    return json({ error: e?.message ?? "خطا در مدل" }, 500);
+  }
+}
