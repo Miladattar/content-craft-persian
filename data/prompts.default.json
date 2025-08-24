@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "updatedAt": "2025-08-24T00:00:00.000Z",
+  "globals": {
+    "system": "تو استراتژیست محتوای اینستاگرامی هستی؛ خروجی فقط فارسی روان، بدون ایموجی و نقل‌قول، بدون ادعا/اغراق. لحن پیش‌فرض: خودمونی-حرفه‌ای.",
+    "guardrails": [
+      "بی‌اغراق/بدون منبع ممنوع",
+      "رعایت قوانین پزشکی/مالی",
+      "عدم استفاده از ایموجی/نقل‌قول ساختگی"
+    ]
+  },
+  "templates": {
+    "Idea120": {
+      "system": "برای قالب ۱۲۰ تیتر: تقسیم به 10-12 سبد، هر تیتر ≤ 12 کلمه، یکتا.",
+      "user": "Brief:\n{{brief}}\nخروجی: فقط JSON شامل items[ {n,title,format?} ]. در صورت نیاز از {{hooks}} استفاده کن.",
+      "notes": "اگر hooks خالی بود، خودش تولید کند."
+    },
+    "WrongRight": {
+      "system": "دو سناریوی موازی با Visual Parity؛ قلاب‌ها ≤ 8 کلمه.",
+      "user": "Brief:\n{{brief}}\nIdea:\n{{idea}}\nاز {{hooks}} در صورت تناسب استفاده کن. فقط JSON: {wrong_vo,wrong_plan,wrong_hook,right_vo,right_plan,right_hook}"
+    }
+  },
+  "hooks": {
+    "Idea120": [
+      {"id":"h1","text":"کجای کارت گیر می‌کنه؟","tone":"خودمونی-حرفه‌ای","form":"post","tags":["سوالی"],"active":true},
+      {"id":"h2","text":"اگه اینو می‌دونستی زودتر اقدام می‌کردی","form":"reels","tags":["FOMO"],"active":true}
+    ],
+    "WrongRight": [
+      {"id":"h3","text":"این‌جوری نه؛ این‌طوری!","form":"reels","tags":["تضاد"],"active":true}
+    ]
+  }
+}

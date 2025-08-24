@@ -1,0 +1,34 @@
+
+import { getPromptPack, setPromptPack } from "../src/lib/configStore";
+import type { PromptPack } from "../src/lib/types.prompts";
+
+function unauthorized() {
+  return new Response(JSON.stringify({ error: "UNAUTHORIZED" }), { status: 401, headers: { "Content-Type": "application/json" }});
+}
+function json(data: any, status=200) {
+  return new Response(JSON.stringify(data), { status, headers: { "Content-Type": "application/json" }});
+}
+
+export default async function handler(req: Request) {
+  const url = new URL(req.url);
+  const key = req.headers.get("x-admin-key") || url.searchParams.get("key") || "";
+  if (!process.env.ADMIN_PASSWORD || key !== process.env.ADMIN_PASSWORD) return unauthorized();
+
+  if (req.method === "GET") {
+    const pack = await getPromptPack();
+    return json(pack);
+  }
+  if (req.method === "PUT") {
+    const body = await req.json() as Partial<PromptPack>;
+    const saved = await setPromptPack(prev => ({
+      ...prev,
+      ...body,
+      templates: { ...prev.templates, ...(body.templates || {}) },
+      hooks: { ...prev.hooks, ...(body.hooks || {}) },
+      version: (prev.version ?? 0) + 1,
+      updatedAt: new Date().toISOString()
+    }));
+    return json(saved);
+  }
+  return new Response("Method Not Allowed", { status: 405 });
+}
