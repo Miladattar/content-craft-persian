@@ -1,6 +1,6 @@
 
 import { getPromptPack, setPromptPack } from "../src/lib/configStore";
-import type { PromptPack } from "../src/lib/types.prompts";
+import type { PromptPack } from "../../src/lib/types.prompts";
 
 function unauthorized() {
   return new Response(JSON.stringify({ error: "UNAUTHORIZED" }), { status: 401, headers: { "Content-Type": "application/json" }});
