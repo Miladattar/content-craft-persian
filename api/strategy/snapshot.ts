@@ -5,7 +5,12 @@ import { getPromptPack } from "../../src/lib/configStore";
 
 export default async function handler(req: Request) {
   const input = await req.json().catch(()=> ({} as any));
-
+function json(data: any, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { "Content-Type": "application/json" },
+  });
+}
   if (!process.env.OPENAI_API_KEY) {
     return json({
       goal: input.goal ?? "sales",
