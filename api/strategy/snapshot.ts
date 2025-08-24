@@ -1,10 +1,7 @@
-
-import { openai } from "../src/lib/openai";
-import { StrategySchema } from "../src/lib/schemas";
-import { extractJson } from "./_json";
-import { getPromptPack } from "../src/lib/configStore";
-
-function json(data:any, status=200){ return new Response(JSON.stringify(data), {status, headers:{ "Content-Type":"application/json" }}); }
+import { openai } from "../../src/lib/openai";
+import { StrategySchema } from "../../src/lib/schemas";
+import { extractJson } from "../_json";
+import { getPromptPack } from "../../src/lib/configStore";
 
 export default async function handler(req: Request) {
   const input = await req.json().catch(()=> ({} as any));
