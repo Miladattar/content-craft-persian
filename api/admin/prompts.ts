@@ -1,5 +1,5 @@
 
-import { getPromptPack, setPromptPack } from "../../src/lib/configStore";
+import { getPromptPack, setPromptPack } from "../../src/lib/configStore.js";
 import type { PromptPack } from "../../src/lib/types.prompts";
 
 function unauthorized() {
