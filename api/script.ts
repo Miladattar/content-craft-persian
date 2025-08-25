@@ -1,8 +1,8 @@
 
-import { openai } from "../src/lib/openai";
-import { ScriptSchema } from "../src/lib/schemas";
-import { extractJson } from "./_json";
-import { getPromptPack } from "../src/lib/configStore";
+import { openai } from "../src/lib/openai.js";
+import { ScriptSchema } from "../src/lib/schemas.js";
+import { extractJson } from "./_json.js";
+import { getPromptPack } from "../src/lib/configStore.js";
 import type { TemplateKey, Hook } from "../src/lib/types.prompts";
 
 function json(d:any,s=200){return new Response(JSON.stringify(d),{status:s,headers:{"Content-Type":"application/json"}});}
