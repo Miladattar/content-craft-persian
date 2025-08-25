@@ -1,7 +1,7 @@
-import { openai } from "../../src/lib/openai";
-import { StrategySchema } from "../../src/lib/schemas";
-import { extractJson } from "../_json";
-import { getPromptPack } from "../../src/lib/configStore";
+import { openai } from "../../src/lib/openai.js";
+import { StrategySchema } from "../../src/lib/schemas.js";
+import { extractJson } from "../_json.js";
+import { getPromptPack } from "../../src/lib/configStore.js";
 
 export default async function handler(req: Request) {
   const input = await req.json().catch(()=> ({} as any));
