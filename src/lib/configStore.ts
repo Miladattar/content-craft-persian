@@ -1,7 +1,7 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
-import type { PromptPack } from "./types.prompts";
+import type { PromptPack } from "./types.prompts.js";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const RUNTIME_FILE = path.join(DATA_DIR, "prompts.runtime.json");
